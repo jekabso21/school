@@ -1,3 +1,4 @@
+#TODO Jāpabeidz vēl viens cikls, kurš pārbauda vai ir sasniegts maksimālais skaitlis, kādu var nosūtīt vienam studentam
 import re
 import random
 
@@ -5,73 +6,72 @@ student_ids = input("Enter student IDs: \n")
 max_sent = 3
 sent_work = {}
 recived_work = {}
-students = []
 max_limit = 0
-
+r_files = []
 
 def set_each_student():
-    Values = re.findall('\-?\d+', student_ids)
-    for elem in Values:
+    ids = re.findall('\-?\d+', student_ids)
+    students = []
+    for elem in ids:
         sent_work[elem] = 0
         recived_work[elem] = False
         students.append(elem)
+    print("I got this: ", students)
+    send_rnd(students)
 
-    send_rnd()
 
 
-def send_rnd():
+def send_rnd(students):
     for elem in students:
-        #print(elem)
+        files = []
         #print(recived_work[elem])
         if recived_work[elem] == False:
-            rnd_files = random.sample(range(0, len(students)), int(max_sent))
-            if elem in rnd_files:
-                check_if_not_same_id(rnd_files, elem)
-            if rnd_files[0] == rnd_files[1] or rnd_files[0] == rnd_files[2] or rnd_files[1] == rnd_files[2]:
-                check_if_not_same(rnd_files)
-            for i in rnd_files:
-                #print(sent_work[students[i]] <= max_sent)
+            files = random.sample(range(0, len(students)), int(max_sent))
+            if elem in files:
+                files = check_if_not_same_id(files, elem, students)
+                print(files)
+            if files[0] == files[1] or files[0] == files[2] or files[1] == files[2]:
+                files = check_if_not_same(files, students)
+            for i in files:
                 if sent_work[students[i]] <= max_sent:
-                    check_if_has_more_then(rnd_files)
+                    files = check_if_has_more_then(files, students)
                 sent_work[students[i]] += 1
                 recived_work[elem] = True
+                print("Student: ", students[i], " got file from: ", elem, " files: ", files)
+        #return r_files, recived_work
 
-    print(recived_work)
-    print(sent_work)
-
-def check_if_not_same(rnd_files):
+def check_if_not_same(rnd_files, student):
     same = True
     while same == True:
         if rnd_files[0] == rnd_files[1]:
-            rnd_files[1] = random.randint(0, len(students))
+            rnd_files[1] = random.randint(0, len(student))
         elif rnd_files[0] == rnd_files[2]:
-            rnd_files[2] = random.randint(0, len(students))
+            rnd_files[2] = random.randint(0, len(student))
         elif rnd_files[1] == rnd_files[2]:
-            rnd_files[2] = random.randint(0, len(students))
+            rnd_files[2] = random.randint(0, len(student))
         else:
-            same = False
+            return rnd_files
 
-def check_if_not_same_id(rnd_files, std_id):
+def check_if_not_same_id(rnd_files, std_id, stud):
     samestd = True
     while samestd == True:
         for elem in rnd_files:
             if elem == std_id:
                 rnd_files.remove(elem)
-                rnd_files.append(random.randint(0, len(students)))
+                rnd_files.append(random.randint(0, len(stud)))
     else:
-        samestd = False
+        return rnd_files
 
         
-def check_if_has_more_then(rnd_files):
-    print("check_if_has_more_then")
+def check_if_has_more_then(rnd, student):
     max_limit = True
     while max_limit == True:
-        for elem in students:
+        for elem in student:
             if sent_work[elem] > max_sent:
-                rnd_files[2] = random.randint(0, len(students))
-                print(rnd_files[2])
+                rnd[2] = random.randint(0, len(student))
+                print(rnd[2])
             else:
-                max_limit = False
+                return rnd
     
 print(set_each_student())
 
