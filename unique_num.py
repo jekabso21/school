@@ -3,8 +3,6 @@ import re
 
 user_input = input("Enter your numbers: \n")
 unique = []
-rnd = random.sample(range(0, 100), 10)
-print(rnd)
 
 
 def unique_num(nums):
