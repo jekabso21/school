@@ -1,4 +1,3 @@
-import random
 import re
 
 user_input = input("Enter your numbers: \n")
