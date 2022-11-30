@@ -149,9 +149,7 @@ while True:
                 bkground.bgcolor(color)
             rand = random.randint(0, 10)
             print(rand)
-            if rand > 5:
-                print('special effect')
-                print(sppedup)
+
 
 
 
