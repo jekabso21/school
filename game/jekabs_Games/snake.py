@@ -2,11 +2,14 @@ import random
 import time
 import turtle
 
-delay = 0.1
+delay = 0.2
 
 # Score
 score = 0
 high_score = 0
+
+#for special effects config
+effets = True
 
 # Set up the screen
 bkground = turtle.Screen()
@@ -131,18 +134,26 @@ while True:
         new_segment.color("white")
         new_segment.penup()
         segments.append(new_segment)
-        rnd = random.randint(0, 10)
-        if rnd > 8:
-            color = random.choice(['green', 'blue', 'yellow', 'orange', 'purple', 'pink', 'black'])
-            bkground.bgcolor('green')
-            time.sleep(0.1)
-            bkground.bgcolor('purple')
-            time.sleep(0.1)
-            bkground.bgcolor('pink')
-            time.sleep(0.1)
-            bkground.bgcolor('white')
-            time.sleep(0.1)
-            bkground.bgcolor(color)
+        if effets == True:
+            rnd = random.randint(0, 10)
+            if rnd > 8:
+                color = random.choice(['green', 'blue', 'yellow', 'orange', 'purple', 'pink', 'black'])
+                bkground.bgcolor('green')
+                time.sleep(0.1)
+                bkground.bgcolor('purple')
+                time.sleep(0.1)
+                bkground.bgcolor('pink')
+                time.sleep(0.1)
+                bkground.bgcolor('white')
+                time.sleep(0.1)
+                bkground.bgcolor(color)
+            rand = random.randint(0, 10)
+            print(rand)
+            if rand > 5:
+                print('special effect')
+                print(sppedup)
+
+
 
 
         # Shorten the delay
