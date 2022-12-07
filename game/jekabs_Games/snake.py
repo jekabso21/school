@@ -2,21 +2,23 @@ import random
 import time
 import turtle
 
+effecton = False
+last_speed = 0.2
 delay = 0.2
 
 # Score
 score = 0
 high_score = 0
 
-#for special effects config
+# for special effects config
 effets = True
 
 # Set up the screen
 bkground = turtle.Screen()
 bkground.title("Snake Game by @jekabs")
 bkground.bgcolor("black")
-bkground.setup(width=600, height=600)
-bkground.tracer(0)  # Turns off the screen updates
+bkground.setup(width=1920, height=1080)
+bkground.tracer(1)  # Turns off the screen updates
 
 # Snake shead
 shead = turtle.Turtle()
@@ -28,12 +30,12 @@ shead.goto(0, 0)
 shead.direction = "stop"
 
 # Snake food
-sfood = turtle.Turtle()
-sfood.speed(0)
-sfood.shape("circle")
-sfood.color("red")
-sfood.penup()
-sfood.goto(0, 100)
+snake_food = turtle.Turtle()
+snake_food.speed(0)
+snake_food.shape("circle")
+snake_food.color("red")
+snake_food.penup()
+snake_food.goto(0, 100)
 
 segments = []
 
@@ -46,6 +48,7 @@ text.penup()
 text.hideturtle()
 text.goto(0, 260)
 text.write("Score: 0  High Score: 0", align="center", font=("Courier", 24, "normal"))
+
 
 # Keyboard bindings
 def go_up():
@@ -66,7 +69,6 @@ def go_left():
 def go_right():
     if shead.direction != "left":
         shead.direction = "right"
-
 
 
 def move():
@@ -97,9 +99,8 @@ bkground.onkeypress(go_right, "d")
 # Main game loop
 while True:
     bkground.update()
-
     # Check for a collision with the border
-    if shead.xcor() > 290 or shead.xcor() < -290 or shead.ycor() > 290 or shead.ycor() < -290:
+    if shead.xcor() > 490 or shead.xcor() < -490 or shead.ycor() > 490 or shead.ycor() < -490:
         time.sleep(1)
         shead.goto(0, 0)
         shead.direction = "stop"
@@ -115,17 +116,18 @@ while True:
         score = 0
 
         # Reset the delay
-        delay = 0.1
+        delay = 0.2
 
         text.clear()
-        text.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+        text.write("Score: {}  High Score: {}".format(score, high_score), align="center",
+                   font=("Courier", 24, "normal"))
 
     # Check for a collision with the food
-    if shead.distance(sfood) < 20:
+    if shead.distance(snake_food) < 20:
         # Move the food to a random spot
-        x = random.randint(-290, 290)
-        y = random.randint(-290, 290)
-        sfood.goto(x, y)
+        x = random.randint(-485, 485)
+        y = random.randint(-485, 485)
+        snake_food.goto(int(x), int(y))
 
         # Add a segment
         new_segment = turtle.Turtle()
@@ -149,10 +151,14 @@ while True:
                 bkground.bgcolor(color)
             rand = random.randint(0, 10)
             print(rand)
-
-
-
-
+            if effecton == False:
+                if random.randint(0, 10) > 6:
+                    last_speed = delay
+                    delay = 0.030
+                    effecton = True
+            else:
+                delay = last_speed
+                effecton = False
 
         # Shorten the delay
         delay -= 0.001
@@ -164,7 +170,8 @@ while True:
             high_score = score
 
         text.clear()
-        text.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+        text.write("Score: {}  High Score: {}".format(score, high_score), align="center",
+                   font=("Courier", 24, "normal"))
 
     # Move the end segments first in reverse order
     for index in range(len(segments) - 1, 0, -1):
@@ -204,8 +211,28 @@ while True:
             # Update the score display
             text.clear()
             text.write("Score: {}  High Score: {}".format(score, high_score), align="center",
-                      font=("Courier", 24, "normal"))
+                       font=("Courier", 24, "normal"))
 
     time.sleep(delay)
 
-bkground.mainloop()
+
+def start_menu():
+    text.write("Thank you for using Jekabs Snake Game Press Enter to start", align="center",
+               font=("Courier", 24, "normal"))
+    bkground.listen()
+    bkground.onkeypress(start_game, "Enter")
+    bkground.onkeypress(exit_game, "Escape")
+    text.goto(0, 0)
+    text.write("Controls: W - Up, S - Down, A - Left, D - Right", align="center", font=("Courier", 24, "normal"))
+    text.goto(0, -30)
+    text.write("Press Escape to exit", align="center", font=("Courier", 24, "normal"))
+    text.goto(0, -60)
+
+
+def start_game():
+    # code
+    text.clear()
+    #bkground.mainloop()
+
+
+start_menu()
